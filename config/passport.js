@@ -23,8 +23,10 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 
-passport.deserializeUser((id, done)=>{
-    User.findById(id, (err, user)=>{
-        done(err, user);
+passport.deserializeUser(function(id, done) {
+    User.findById(id).then(function (user) {
+        done(null, user);
+    }).catch(function (err) {
+        done(err, null, { message: 'User does not exist' });
     });
 });
